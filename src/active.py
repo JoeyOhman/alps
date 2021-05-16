@@ -1,3 +1,4 @@
+
 import json
 import logging
 import os
@@ -106,14 +107,31 @@ def main():
 
     logger.info(f"Already sampled {len(sampled)} examples")
     sampled = acquire(dataset, sampled, args, model, tokenizer)
+    print("sampled:", sampled)
 
 
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
 
-    torch.save(sampled, os.path.join(args.output_dir, 'sampled.pt'))
+    # torch.save(sampled, os.path.join(args.output_dir, 'sampled.pt'))
+    sampled_list = sampled.tolist()
+    with open(os.path.join(args.data_dir, "chosen_indices.txt"), "w") as out:
+        for s in sampled_list:
+            out.write(str(s) + "\n")
+
     logger.info(f"Sampled {len(sampled)} examples")
     return len(sampled)
 
+
 if __name__ == "__main__":
+    import sys
+
+    print("Python version")
+    print(sys.version)
+    print("Version info.")
+    print(sys.version_info)
+
+    from importlib.metadata import version
+    print(version('torch'))
+
     main()

@@ -67,11 +67,13 @@ class SentenceDataProcessor(DataProcessor):
 
     def get_dev_examples(self, data_dir):
         """See base class."""""
-        return self._create_examples(self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+        # return self._create_examples(self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+        return []
 
     def get_test_examples(self, data_dir):
         """See base class."""""
-        return self._create_examples(self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
+        # return self._create_examples(self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
+        return []
 
     def get_labels(self):
         return NotImplementedError
@@ -109,13 +111,18 @@ class IMDBProcessor(SentenceDataProcessor):
         labels = ["pos", "neg"]
         return labels
 
+class JoeyProcessor(SentenceDataProcessor):
+    def get_labels(self):
+        labels = ["0", "1"]
+        return labels
+
 processors = glue_processors.copy()
 processors.update(
-    {"pubmed":PubMedProcessor, "agnews":AGNewsProcessor, "imdb":IMDBProcessor}
+    {"pubmed":PubMedProcessor, "agnews":AGNewsProcessor, "imdb":IMDBProcessor, "joey":JoeyProcessor}
 )
 output_modes = glue_output_modes
 output_modes.update(
-    {"pubmed":"classification", "agnews":"classification", "imdb":"classification"}
+    {"pubmed":"classification", "agnews":"classification", "imdb":"classification", "joey":"classification"}
 )
 
 def compute_metrics(task_name, preds, labels):
