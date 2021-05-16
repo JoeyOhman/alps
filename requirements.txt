@@ -37,7 +37,8 @@ sacremoses==0.0.38
 scikit-learn==0.22.1
 scikit-misc==0.1.1
 scipy==1.4.1
-sentencepiece==0.1.85
+# sentencepiece==0.1.85
+sentencepiece==0.1.95
 seqeval==0.0.12
 six==1.14.0
 tensorboard==2.1.0
