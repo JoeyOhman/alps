@@ -29,6 +29,7 @@ def set_seed(args):
 
 def load_model(args):
     args.model_type = args.model_type.lower()
+    print("Model lower case:", args.do_lower_case)
     if args.head=="sc":
         processor = processors[args.task_name]()
         args.output_mode = output_modes[args.task_name]
@@ -135,7 +136,7 @@ def get_args():
     )
     parser.add_argument("--eval_pretrained", action="store_true", help="Only evaluate pretrained model.")
     parser.add_argument(
-        "--do_lower_case", default=True, type=bool, help="Set this flag if you are using an uncased model.",
+        "--do_lower_case", default=False, type=bool, help="Set this flag if you are using an uncased model.",
     )
 
 
