@@ -10,7 +10,6 @@ import pathlib
 import os
 from sklearn.cluster import KMeans
 
-# IGNORE_INDEX = -100
 IGNORE_INDEX = -100
 
 def sampling_to_head(sampling):
@@ -189,7 +188,9 @@ def get_scores_or_vectors(eval_dataset, args, model, tokenizer=None):
 
         # Set ignore index to pad token id
         global IGNORE_INDEX
-        IGNORE_INDEX = tokenizer.pad_token_id
+        # IGNORE_INDEX = tokenizer.pad_token_id
+        IGNORE_INDEX = 43210
+        # 43210 = 'förskjutning'
 
         all_scores_or_vectors = None
         for batch in tqdm(eval_dataloader, desc="Evaluating"):
