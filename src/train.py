@@ -315,7 +315,7 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False, test=False):
             str(task),
         ),
     )
-    if os.path.exists(cached_features_file) and not args.overwrite_cache:
+    if os.path.exists(cached_features_file) and not args.overwrite_cache and False:
         logger.info("Loading features from cached file %s", cached_features_file)
         features = torch.load(cached_features_file)
     else:
@@ -372,6 +372,9 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False, test=False):
     elif output_mode == "regression":
         all_labels = torch.tensor([f.label for f in features], dtype=torch.float)
     dataset = TensorDataset(all_input_ids, all_attention_mask, all_token_type_ids, all_labels)
+
+    print("Dataset size (probably):", len(all_input_ids))
+
     return dataset
 
 

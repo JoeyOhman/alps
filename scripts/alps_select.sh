@@ -1,4 +1,4 @@
-#!/bin/bash
+
 # FIRST ARGUMENT IS NUMBER OF SAMPLES TO SAMPLE (acquisition batch size)
 
 set -e
@@ -15,8 +15,6 @@ SEED=125
 COLDSTART=none
 SAMPLING=alps
 INCREMENT=$1
-# MAX_SIZE=1000
-MAX_SIZE=$INCREMENT
 ### end
 
 METHOD=${COLDSTART}-${SAMPLING}
@@ -50,35 +48,10 @@ python -m src.active \
     --max_seq_length 128
 }
 
-train (){
-# 1 = number of samples
-# 2 = output directory
-echo -e "\n\nTRAINING WITH $1 SAMPLES\n\n"
-python -m src.train \
-    --model_type $MODEL_TYPE \
-    --model_name_or_path $MODEL_NAME \
-    --task_name $TASK_NAME \
-    --do_train \
-    --do_eval \
-    --data_dir $DATA_DIR/$TASK_NAME \
-    --max_seq_length 128 \
-    --learning_rate 2e-5 \
-    --num_train_epochs 3.0 \
-    --output_dir $2 \
-    --seed $SEED \
-    --base_model $MODEL_NAME \
-    --per_gpu_eval_batch_size 32 \
-    --per_gpu_train_batch_size 32
-}
-
 echo "Starting ALPS"
+
 f=$MODEL0
 p=$(( $START + $INCREMENT ))
-while [ $p -le $MAX_SIZE ]
-do
-    active $p $f $METHOD
-    f=${MODEL_DIR}/${METHOD}_$p
-    # train $p $f
-    p=$(( $p + $INCREMENT ))
-done
+active $p $f $METHOD
+
 echo "ALPS done!"

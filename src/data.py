@@ -53,10 +53,12 @@ def convert_examples_to_features(
         feature = InputFeatures(**inputs, label=labels[i])
         features.append(feature)
 
+    """
     for i, example in enumerate(examples[:5]):
         logger.info("*** Example ***")
         logger.info("guid: %s" % (example.guid))
         logger.info("features: %s" % features[i])
+    """
 
     return features
 

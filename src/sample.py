@@ -10,6 +10,9 @@ import pathlib
 import os
 from sklearn.cluster import KMeans
 
+# IGNORE_INDEX = -100
+IGNORE_INDEX = -100
+
 def sampling_to_head(sampling):
     # given [sampling] method, return head of model that is supposed to be used
     head = "lm"
@@ -57,7 +60,7 @@ def get_mlm_loss(model, inputs, **kwargs):
     logits = model(**inputs)[1]
     labels = inputs["masked_lm_labels"]
     batch_size, seq_length, vocab_size = logits.size()
-    loss_fct = CrossEntropyLoss(reduction='none')
+    loss_fct = CrossEntropyLoss(reduction='none', ignore_index=IGNORE_INDEX)
     loss_batched = loss_fct(logits.view(-1, vocab_size), labels.view(-1))
     loss = loss_batched.view(batch_size, seq_length)
     return loss
@@ -119,7 +122,11 @@ def mask_tokens(inputs, tokenizer, args):
         padding_mask = labels.eq(tokenizer.pad_token_id)
         probability_matrix.masked_fill_(padding_mask, value=0.0)
     masked_indices = torch.bernoulli(probability_matrix).bool()
-    labels[~masked_indices] = -100  # We only compute loss on masked tokens
+    # labels[~masked_indices] = -100  # We only compute loss on masked tokens
+    # tokenizer.pad_token_id
+    # print("PAD TOKEN ID:", tokenizer.pad_token_id)
+    labels[~masked_indices] = IGNORE_INDEX  # We only compute loss on masked tokens
+    # print(labels)
 
     # 80% of the time, we replace masked input tokens with tokenizer.mask_token ([MASK])
     indices_replaced = torch.bernoulli(torch.full(labels.shape, 0.8)).bool() & masked_indices
@@ -179,6 +186,10 @@ def get_scores_or_vectors(eval_dataset, args, model, tokenizer=None):
         # multi-gpu eval
         if args.n_gpu > 1 and not isinstance(model, torch.nn.DataParallel):
             model = torch.nn.DataParallel(model)
+
+        # Set ignore index to pad token id
+        global IGNORE_INDEX
+        IGNORE_INDEX = tokenizer.pad_token_id
 
         all_scores_or_vectors = None
         for batch in tqdm(eval_dataloader, desc="Evaluating"):

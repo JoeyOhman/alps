@@ -4,9 +4,9 @@ import random
 import numpy as np
 from transformers import glue_processors as processors
 from transformers import (
-    AutoModelWithLMHead,
-    AutoModelForSequenceClassification,
     AutoTokenizer,
+    AutoModelForSequenceClassification,
+    AutoModelWithLMHead,
     AutoConfig
 )
 from src.data import processors, output_modes

@@ -1,3 +1,6 @@
+# from importlib.metadata import version
+# print(version('torch'))
+# print(version('transformers'))
 
 import json
 import logging
@@ -124,14 +127,13 @@ def main():
 
 
 if __name__ == "__main__":
-    import sys
+    # import sys
 
-    print("Python version")
-    print(sys.version)
-    print("Version info.")
-    print(sys.version_info)
+    # print("Python version")
+    # print(sys.version)
+    # print("Version info.")
+    # print(sys.version_info)
 
-    from importlib.metadata import version
-    print(version('torch'))
+    # print(version('torch'))
 
     main()
