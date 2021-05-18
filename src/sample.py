@@ -62,6 +62,9 @@ def get_mlm_loss(model, inputs, **kwargs):
     loss_fct = CrossEntropyLoss(reduction='none', ignore_index=IGNORE_INDEX)
     loss_batched = loss_fct(logits.view(-1, vocab_size), labels.view(-1))
     loss = loss_batched.view(batch_size, seq_length)
+    # print("***********")
+    # print("***********")
+    print("MEAN LOSS: ", np.mean(loss.cpu().numpy()))
     return loss
 
 def badge_gradient(model, inputs, **kwargs):
@@ -188,8 +191,11 @@ def get_scores_or_vectors(eval_dataset, args, model, tokenizer=None):
 
         # Set ignore index to pad token id
         global IGNORE_INDEX
-        # IGNORE_INDEX = tokenizer.pad_token_id
-        IGNORE_INDEX = 43210
+        IGNORE_INDEX = tokenizer.pad_token_id
+        # och_token_id = tokenizer.convert_tokens_to_ids(["och"])[0]
+        # print("id for och:", och_token_id)
+        # IGNORE_INDEX = och_token_id
+        # IGNORE_INDEX = 43210
         # 43210 = 'förskjutning'
 
         all_scores_or_vectors = None
