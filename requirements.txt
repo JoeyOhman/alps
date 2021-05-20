@@ -47,8 +47,8 @@ tensorboardX==2.0
 tokenizers==0.0.11
 torch==1.4.0
 tqdm==4.42.1
-# transformers==2.4.1
-transformers==2.3.0
+transformers==2.4.1
+# transformers==2.3.0
 urllib3==1.25.8
 Werkzeug==1.0.0
 zipp==3.3.1

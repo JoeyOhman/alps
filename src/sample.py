@@ -125,7 +125,8 @@ def mask_tokens(inputs, tokenizer, args):
         padding_mask = labels.eq(tokenizer.pad_token_id)
         probability_matrix.masked_fill_(padding_mask, value=0.0)
     masked_indices = torch.bernoulli(probability_matrix).bool()
-    # labels[~masked_indices] = -100  # We only compute loss on masked tokens
+
+    labels[~masked_indices] = -100  # We only compute loss on masked tokens
     # tokenizer.pad_token_id
     # print("PAD TOKEN ID:", tokenizer.pad_token_id)
     # TODO: Removed only consider masked indices
