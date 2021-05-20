@@ -59,12 +59,13 @@ def get_mlm_loss(model, inputs, **kwargs):
     logits = model(**inputs)[1]
     labels = inputs["masked_lm_labels"]
     batch_size, seq_length, vocab_size = logits.size()
-    loss_fct = CrossEntropyLoss(reduction='none', ignore_index=IGNORE_INDEX)
+    # loss_fct = CrossEntropyLoss(reduction='none', ignore_index=IGNORE_INDEX)
+    loss_fct = CrossEntropyLoss(reduction='none')
     loss_batched = loss_fct(logits.view(-1, vocab_size), labels.view(-1))
     loss = loss_batched.view(batch_size, seq_length)
     # print("***********")
     # print("***********")
-    print("MEAN LOSS: ", np.mean(loss.cpu().numpy()))
+    # print("MEAN LOSS BATCH: ", np.mean(loss.cpu().numpy()))
     return loss
 
 def badge_gradient(model, inputs, **kwargs):
@@ -127,7 +128,8 @@ def mask_tokens(inputs, tokenizer, args):
     # labels[~masked_indices] = -100  # We only compute loss on masked tokens
     # tokenizer.pad_token_id
     # print("PAD TOKEN ID:", tokenizer.pad_token_id)
-    labels[~masked_indices] = IGNORE_INDEX  # We only compute loss on masked tokens
+    # TODO: Removed only consider masked indices
+    # labels[~masked_indices] = IGNORE_INDEX  # We only compute loss on masked tokens
     # print(labels)
 
     # 80% of the time, we replace masked input tokens with tokenizer.mask_token ([MASK])
@@ -208,5 +210,6 @@ def get_scores_or_vectors(eval_dataset, args, model, tokenizer=None):
                 all_scores_or_vectors = np.append(all_scores_or_vectors, scores_or_vectors.detach().cpu().numpy(), axis=0)
 
     all_scores_or_vectors = torch.tensor(all_scores_or_vectors)
+    print("MEAN LOSS: ", np.mean(all_scores_or_vectors.cpu().numpy()))
     return all_scores_or_vectors
 
