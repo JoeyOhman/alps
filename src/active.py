@@ -77,7 +77,7 @@ def acquire(pool, sampled, args, model, tokenizer):
     return queries
 
 def main():
-    os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+    # os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
     args = setup.get_args()
     setup.set_seed(args)
     if not os.path.exists(args.output_dir):

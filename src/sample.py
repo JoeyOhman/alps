@@ -10,7 +10,7 @@ import pathlib
 import os
 from sklearn.cluster import KMeans
 
-IGNORE_INDEX = -100
+# IGNORE_INDEX = -100
 
 def sampling_to_head(sampling):
     # given [sampling] method, return head of model that is supposed to be used
@@ -193,8 +193,8 @@ def get_scores_or_vectors(eval_dataset, args, model, tokenizer=None):
             model = torch.nn.DataParallel(model)
 
         # Set ignore index to pad token id
-        global IGNORE_INDEX
-        IGNORE_INDEX = tokenizer.pad_token_id
+        # global IGNORE_INDEX
+        # IGNORE_INDEX = tokenizer.pad_token_id
         # och_token_id = tokenizer.convert_tokens_to_ids(["och"])[0]
         # print("id for och:", och_token_id)
         # IGNORE_INDEX = och_token_id
