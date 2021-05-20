@@ -50,8 +50,8 @@ def acquire(pool, sampled, args, model, tokenizer):
     unsampled = np.delete(torch.arange(len(pool)), sampled)
     if clustering is not None:
         # cluster-based sampling method like BADGE and ALPS
-        # vectors = normalize(scores_or_vectors) # TODO: Removed l2-norm
-        vectors = scores_or_vectors
+        vectors = normalize(scores_or_vectors) # TODO: Removed l2-norm
+        # vectors = scores_or_vectors
         centers = sampled.tolist()
         if not condition:
             # do not condition on previously chosen points
