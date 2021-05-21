@@ -50,12 +50,14 @@ def acquire(pool, sampled, args, model, tokenizer):
     # indices of unlabeled pool
     unsampled = np.delete(torch.arange(len(pool)), sampled)
 
-    sort_on_loss = True
+    """
+    sort_on_loss = False
     if sort_on_loss:
         # scores_or_vectors: num_samples x seq_len
         mean_losses = np.mean(scores_or_vectors[unsampled].cpu().numpy(), axis=1)
         indices_sorted_loss_desc = np.argsort(mean_losses)[::-1]
         return indices_sorted_loss_desc[:args.query_size]
+    """
 
     if clustering is not None:
         # cluster-based sampling method like BADGE and ALPS
