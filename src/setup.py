@@ -136,7 +136,7 @@ def get_args():
     )
     parser.add_argument("--eval_pretrained", action="store_true", help="Only evaluate pretrained model.")
     parser.add_argument(
-        "--do_lower_case", default=False, type=bool, help="Set this flag if you are using an uncased model.",
+        "--do_lower_case", default=True, type=bool, help="Set this flag if you are using an uncased model.",
     )
 
 
