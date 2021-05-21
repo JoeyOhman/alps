@@ -47,10 +47,19 @@ def acquire(pool, sampled, args, model, tokenizer):
     [sampled] data."""
     scores_or_vectors = sample.get_scores_or_vectors(pool, args, model, tokenizer)
     clustering, condition = cluster_method(args.sampling)
+    # indices of unlabeled pool
     unsampled = np.delete(torch.arange(len(pool)), sampled)
+
+    sort_on_loss = True
+    if sort_on_loss:
+        # scores_or_vectors: num_samples x seq_len
+        mean_losses = np.mean(scores_or_vectors[unsampled].cpu().numpy(), axis=1)
+        indices_sorted_loss_desc = np.argsort(mean_losses)[::-1]
+        return indices_sorted_loss_desc[:args.query_size]
+
     if clustering is not None:
         # cluster-based sampling method like BADGE and ALPS
-        vectors = normalize(scores_or_vectors) # TODO: Removed l2-norm
+        vectors = normalize(scores_or_vectors)  # TODO: Removed l2-norm
         # vectors = scores_or_vectors
         centers = sampled.tolist()
         if not condition:
